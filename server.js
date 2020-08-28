@@ -4,6 +4,7 @@ const app = express();
 const Razorpay = require('razorpay');
 const axios = require('axios');
 var crypto = require('crypto');
+var shortid = require('shortid');
 
 app.use(cors());
 app.use(express.json());
@@ -15,22 +16,23 @@ const instance = new Razorpay({
     key_secret: 'dJ6nP8IZCr0JU4xlFJqXV5Rr',
 });
 
-app.get('/orders',(req,res)=>{
+app.post('/orders',(req,res)=>{
     try{
-        const currencyheader = req.ip;
-        // console.log(currencyheader);
+        //console.log(req.body);
+        const { amount,paymentcapture } = req.body.data;
+        console.log(typeof(amount));
         var options={
-            amount: 70 * 100, // amount == Rs 10
+            amount: Number(amount) * 100, // amount == Rs 10
             currency: "INR",
-            receipt: "receipt#1",
-            payment_capture: 1,
+            receipt: shortid(),
+            payment_capture: paymentcapture,
             // 1 for automatic capture // 0 for manual capture
         }
         instance.orders.create(options, async(error, order)=> {
             if(error){
                 res.status(500).send(`something went wrong ${error}`);
             }else{
-                console.log(order);
+                //console.log(order);
                 return res.status(200).json(order);
             }
         })
@@ -40,46 +42,20 @@ app.get('/orders',(req,res)=>{
     }
    })
 
-//    app.post('/capture',async (req,res)=>{
-//        try{
-//            let data={
-//             amount: 7000,
-//             currency: "INR",
-//            }
-
-//             axios.post(`https://rzp_test_XPENsOw3ma17Yl:dJ6nP8IZCr0JU4xlFJqXV5Rr@api.razorpay.com/v1/payments/order_FW8cjURDWMgrfv/capture`,{data:data})
-//             .then(response=>{
-//                console.log(`response.data is ${response.data}`);
-//                res.send("success")
-//            })
-//            .catch(err=>console.log(`error in posting axios ${err}`));
-
-//        }catch(err){
-//            console.log(`error in post method ${err}`)
-//        }
-//    })
-
-   app.post('/callback/:id',async(req,res)=>{
+   app.post('/callback/:orderid',async(req,res)=>{
        console.log(req.body);
-       console.log(req.params.id);
-       //Name of the file : sha256-hmac.js
-                //Loading the crypto module in node.js
-                console.log(req.body.razorpay_order_id);
-                console.log(req.body.razorpay_payment_id);
-                //creating hmac object
-                var hmac = await crypto.createHmac('sha256', `${req.params.id}|${req.body.razorpay_payment_id}`, 'dJ6nP8IZCr0JU4xlFJqXV5Rr');
-                //passing the data to be hashed
-                data = await hmac.update('nodejsera');
-                //Creating the hmac in the required format
-                gen_hmac= await data.digest('hex');
-                //Printing the output on the console
-                console.log(`gen_hmac is ${gen_hmac}`);
-                if(gen_hmac === req.body.razorpay_signature){
-                    console.log(`response successful!!!`);
-                }else{
-                    res.send("failure");
-                }
-   })
+       const crypto = require('crypto');
+       var hash = crypto.createHmac('sha256', 'dJ6nP8IZCr0JU4xlFJqXV5Rr');
+       hash.update(`${req.params.orderid}|${req.body.razorpay_payment_id}`);
+       var value = hash.digest('hex');
+        console.log(value);
+        if(value === req.body.razorpay_signature){
+            res.status(200).send("Payment Successful");
+        }else{
+            res.send("payment failed")
+        }
+       })
+
 app.listen(port, () => {
     console.log(`Server is listening at http://localhost:${port}`);
 });

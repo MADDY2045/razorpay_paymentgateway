@@ -1,6 +1,7 @@
 #container{
   min-height: 500px;
   margin: 100px auto;
+  max-width: 400px;
 }
 
 body{
@@ -9,4 +10,43 @@ body{
 
 #getorder{
   margin:400px auto;
+}
+
+#amount{
+  position: relative;
+  top:60px;
+  left:30px;
+}
+
+#amount-label{
+  margin-right: 30px;
+}
+
+#currency{
+  position: relative;
+  top:90px;
+  left:25px;
+}
+
+#currency-label{
+  margin-right: 30px;
+}
+
+#paymentcapture{
+  position: relative;
+  top:60px;
+  left:120px;
+  width: 20%;
+}
+
+#paymentcapture-label{
+  position: relative;
+  left:-100px;
+  top:40px;
+}
+
+.btn {
+  position: relative;
+  top:150px;
+  left:100px;
 }
