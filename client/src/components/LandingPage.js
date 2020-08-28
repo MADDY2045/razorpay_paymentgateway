@@ -32,11 +32,10 @@ const LandingPage = () => {
                 key: "rzp_test_XPENsOw3ma17Yl",
                 amount: amount,
                 currency:currency,
-                name: "Acme Corp",
+                name: "TRIMED Solutions Private Ltd.",
                 description: "Test Transaction",
-                image: "https://example.com/your_logo",
+                image: "https://upload.wikimedia.org/wikipedia/commons/4/44/BMW.svg",
                 order_id:id,
-                callback_url: `http://localhost:7000/callback/${id}`,
                 prefill: {
                     name: "Madhavan S",
                     email: "madhavaneee08@gmail.com",
@@ -46,7 +45,8 @@ const LandingPage = () => {
                     address: "Razorpay Corporate Office"
                 },
                 theme: {
-                    "color": "#F37254"
+                    color: `#${Math.floor(Math.random()*16777215).toString(16)}`,
+                    hide_topbar:false
                 }
             };
             var rzp1 = new window.Razorpay(options);

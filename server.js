@@ -56,6 +56,25 @@ app.post('/orders',(req,res)=>{
         }
        })
 
+app.post('/webhookresponse',(req,res)=>{
+    //console.log(req.headers['x-razorpay-signature']);
+    const crypto = require('crypto');
+    var hash = crypto.createHmac('sha256', 'Prithik007');
+    hash.update(JSON.stringify(req.body));
+    var value = hash.digest('hex');
+    //  console.log(`value:${value} , ${req.headers['x-razorpay-signature']}`);
+     if(value === req.headers['x-razorpay-signature']){
+         console.log("payment successful");
+         console.log(req.body.payload);
+         res.status(200).send("Payment Successful");
+         res.end();
+     }else{
+         res.send("payment failed");
+         console.log(req.body.payload.entity);
+         res.end();
+     }
+})
+
 app.listen(port, () => {
     console.log(`Server is listening at http://localhost:${port}`);
 });
