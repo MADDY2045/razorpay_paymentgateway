@@ -2,6 +2,8 @@ import React,{useState,useEffect} from 'react';
 import '../App.css';
 import axios from 'axios';
 import {CopyToClipboard} from 'react-copy-to-clipboard';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const LandingPage = (props) => {
     const [amount,setAmount] = useState('');
@@ -13,6 +15,8 @@ const LandingPage = (props) => {
     const [copyFlag,setCopyFlag] = useState(false);
     const [url,setUrl] = useState('');
     const [copied,setCopied] = useState(false);
+
+    const notify = () => toast.success("Copied!!!");
 
     const handleChange=(e)=>{
         e.preventDefault();
@@ -143,7 +147,7 @@ const LandingPage = (props) => {
                            <CopyToClipboard text={url}
                             onCopy={() => {
                                 console.log(copied);
-                                alert('copied')
+                               notify();
                                 return setCopied(true)}}>
                             <button className="btn btn-warning mt-3 ml-3">Copy Url</button>
                             </CopyToClipboard>
@@ -151,6 +155,7 @@ const LandingPage = (props) => {
 
                     </form>
                 </div>
+                <ToastContainer />
         </div>
     );
 }
