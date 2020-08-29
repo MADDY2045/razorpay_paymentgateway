@@ -1,6 +1,7 @@
-import React,{useState} from 'react';
+import React,{useState,useEffect} from 'react';
 import '../App.css';
 import axios from 'axios';
+import {CopyToClipboard} from 'react-copy-to-clipboard';
 
 const LandingPage = (props) => {
     const [amount,setAmount] = useState('');
@@ -9,6 +10,9 @@ const LandingPage = (props) => {
     const [contact,setContact] = useState('');
     const [name,setName] = useState('');
     const [customer,setCustomer] = useState('');
+    const [copyFlag,setCopyFlag] = useState(false);
+    const [url,setUrl] = useState('');
+    const [copied,setCopied] = useState(false);
 
     const handleChange=(e)=>{
         e.preventDefault();
@@ -28,6 +32,12 @@ const LandingPage = (props) => {
         }
     }
 
+    useEffect(() => {
+       if( url !== '' && url !== undefined){
+            setCopyFlag(true);
+       }
+    }, [url])
+
     const generateUrl = (e) =>{
         e.preventDefault();
         console.clear();
@@ -42,6 +52,8 @@ const LandingPage = (props) => {
         }
         axios.post('http://localhost:7000/orders',{data:data}).then(response=>{
             console.log(response.data);
+            setUrl(response.data);
+            setCopied(false);
            })
         .catch(err=>console.log(`error in posting orders ${err}`))
         }
@@ -125,6 +137,18 @@ const LandingPage = (props) => {
                             <button
                             type="submit"
                             className="btn btn-outline-success">Generate URL</button>
+                            <br/>
+                            {copyFlag ?
+                            <div>
+                           <CopyToClipboard text={url}
+                            onCopy={() => {
+                                console.log(copied);
+                                alert('copied')
+                                return setCopied(true)}}>
+                            <button className="btn btn-warning mt-3 ml-3">Copy Url</button>
+                            </CopyToClipboard>
+                            </div>:null}
+
                     </form>
                 </div>
         </div>

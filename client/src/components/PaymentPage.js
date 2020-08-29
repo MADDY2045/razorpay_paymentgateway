@@ -27,12 +27,12 @@ const PaymentPage = (props) => {
             }))
         })
         .catch(err=>console.log(`error in getting payment details ${err}`));
-    },[])
+    },[props.match.params.receiptid])
 
    const handlePay = () =>{
         console.clear();
         // console.log(`amount is ${JSON.stringify(state,null,2)}`);
-        const { key,amount,name,contact,description,email,order_id,currency,image,customer } = state;
+        const { key,amount,name,contact,description,email,order_id,currency,image } = state;
         var options={
             key,amount,currency,name,description,image,order_id,
             prefill:{
@@ -56,15 +56,15 @@ const PaymentPage = (props) => {
             <div className="row card" id="paymentboard">
                 <div>
                     <span>Amount</span>
-                    <h5>1000</h5>
+                    <h5>Rs.{(Number(state.amount)/100)}</h5>
                 </div>
                 <div>
                     <span>Receipt</span>
-                    <h5>12345</h5>
+                    <h5>{props.match.params.receiptid}</h5>
                 </div>
                 <div>
                     <span>Customer</span>
-                    <h5>BMW</h5>
+                    <h5>{state.customer}</h5>
                 </div>
                 <button
                 id="clickpay"

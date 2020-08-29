@@ -1,5 +1,5 @@
 #container{
-  min-height: 650px;
+  min-height: 680px;
   margin: 100px auto;
   max-width: 400px;
 }
@@ -47,7 +47,7 @@ body{
 
 .btn {
   position: relative;
-  top:200px;
+  top:170px;
   left:130px;
   margin-right: 10px;
 }
