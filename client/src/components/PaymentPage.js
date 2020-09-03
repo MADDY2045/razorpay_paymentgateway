@@ -2,6 +2,7 @@ import React,{useEffect,useState} from 'react';
 import '../App.css';
 import axios from 'axios';
 
+
 const PaymentPage = (props) => {
     const [state, setState] = useState({ amount: "1", currency: "",name:"",email:"",contact:"",key:"",image:"",description:"",order_id:"",customer:"" });
 
@@ -50,6 +51,7 @@ const PaymentPage = (props) => {
             rzp1.open();
 
     }
+
 
     return (
         <div className="container card" id="paymentcontainer">

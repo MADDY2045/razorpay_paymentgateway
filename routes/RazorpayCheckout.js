@@ -22,12 +22,14 @@ router.get('/razorpay/getpaymentdetails/:orderid',async(req,res)=>{
             //console.log(result);
             let filteredArray = customerArray.filter( item=> item.customer === result[0].customer);
             //console.log(`filteredArray ${filteredArray}`);
-            let output = {
-                customerimageurl:filteredArray[0].imageurl,
-                optionsArray:result
+            if(filteredArray.length>0){
+                let output = {
+                    customerimageurl:filteredArray[0].imageurl,
+                    optionsArray:result
+                }
+                await res.status(200).send(output);
             }
-            await res.status(200).send(output);
-        }else{
+            }else{
             console.log("not found");
             return res.status(500).send("Something went wrong");
         }

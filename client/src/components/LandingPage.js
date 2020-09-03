@@ -69,7 +69,7 @@ const LandingPage = (props) => {
                             <div className="form-inline" id="amount">
                                 <label id="amount-label">Amount</label>
                                 <input
-                                required={true}
+
                                 onChange={handleChange}
                                 id="amount-value" type="text" name="amount" className="form-control"/>
                             </div>

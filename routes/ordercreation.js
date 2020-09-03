@@ -15,16 +15,17 @@ router.post('/orders',(req,res)=>{
         const { amount,paymentcapture } = req.body.data;
         //console.log(typeof(amount));
         var options={
-            amount: Number(amount) * 100, // amount == Rs 10
+            amount: Number(amount) * 100,
             currency: "INR",
             receipt: shortid(),
             payment_capture: paymentcapture,
-            // 1 for automatic capture // 0 for manual capture
         }
         instance.orders.create(options, async(error, order)=> {
             if(error){
-                res.status(500).send(`something went wrong ${error}`);
+                console.log(`order creation error ${JSON.stringify(error,null,2)}`);
+                res.status(500).send(`something went wrong ${JSON.stringify(error)}`);
             }else{
+                console.log(`order is ${JSON.stringify(order,null,2)}`);
                let amount = order.amount;
                let paymentcapture = req.body.data.paymentcapture;
                let receipt = order.receipt;
